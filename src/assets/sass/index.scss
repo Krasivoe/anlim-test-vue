@@ -1,0 +1,50 @@
+// Настройки
+@import "_config/variables";
+@import "_config/font";
+
+// Миксины
+@import "_mixins/container";
+@import "_mixins/flex";
+@import "_mixins/reset";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  @include reset-model();
+}
+
+button {
+  @include reset-button();
+}
+
+input,
+button,
+textarea,
+select {
+  outline: none;
+}
+
+ul, ol, li {
+  list-style: none;
+}
+
+a, a:visited, a:hover {
+  text-decoration: none;
+}
+
+.wrapper {
+  @include wrapper();
+}
+
+.container {
+  @include container();
+}
+
+html,
+body {
+  @include reset-model();
+  height: 100%;
+  width: 100%;
+  min-height: 100vh;
+}
