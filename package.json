@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "primeicons": "^6.0.1",
+    "primevue": "^3.26.0",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3"
   },
@@ -22,6 +24,7 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-vue": "^8.0.3",
+    "jsdoc": "^4.0.2",
     "prettier": "^2.4.1",
     "sass": "^1.32.7",
     "sass-loader": "^12.0.0"

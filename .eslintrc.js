@@ -16,6 +16,7 @@ module.exports = {
     'no-unused-expressions': ['error', { allowTernary: true, allowShortCircuit: true }],
     'no-unused-vars': 'warn',
     'arrow-parens': ['error', 'as-needed'],
-    'comma-dangle': ['error', 'never']
+    'comma-dangle': ['error', 'never'],
+    'vue/multi-word-component-names': 'off'
   }
 };
