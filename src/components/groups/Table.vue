@@ -43,7 +43,6 @@ const onClickRow = event => {
 <style lang="scss">
 .table {
   width: 550px;
-  min-height: 640px;
 
   .p-datatable .p-datatable-thead > tr > th .p-column-header-content {
     display: block;
@@ -53,6 +52,5 @@ const onClickRow = event => {
     text-align: center;
     cursor: pointer;
   }
-
 }
 </style>

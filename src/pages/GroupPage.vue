@@ -10,7 +10,7 @@
           v-for="group in groups"
           @remove-player="removePlayerFromGroup"
           :group="group.group_id"
-          :groupPlayers="groupPlayers"
+          :group-players="groupPlayers"
           :key="group.group_id"/>
       </div>
       <Button
@@ -44,6 +44,7 @@ import { groups } from '@/assets/data/groups.js';
 import Group from '@/components/groups/Group.vue';
 import Table from '@/components/groups/Table.vue';
 import { reactive, ref, watch } from 'vue';
+import { selectGroup } from '@/utils/group.js';
 
 /**
  * Список игроков, для отображения в таблице
@@ -74,9 +75,7 @@ let sendPlayersData = ref([]);
  * Объект, хранящий количество игроков в группах
  */
 const groupCounter = reactive({
-  group1: 0,
-  group2: 0,
-  group3: 0,
+  groups: new Array(3).fill(0),
   currentGroup: 1
 });
 
@@ -102,16 +101,10 @@ const isSavedData = ref(false);
 const addPlayerToGroup = player => {
   if (displayPlayers.value.length === 1) return;
 
-  if (groupCounter.group1 < 3) {
-    groupCounter.group1 += 1;
-    groupCounter.currentGroup = 1;
-  } else if (groupCounter.group2 < 3 && groupCounter.group1 === 3) {
-    groupCounter.group2 += 1;
-    groupCounter.currentGroup = 2;
-  } else {
-    groupCounter.group3 += 1;
-    groupCounter.currentGroup = 3;
-  }
+  const actualGroup = selectGroup(groupCounter);
+
+  groupCounter.currentGroup = actualGroup;
+  groupCounter.groups[actualGroup - 1] += 1;
 
   groupPlayers.value.push({
     ...player,
@@ -132,17 +125,7 @@ const addPlayerToGroup = player => {
  * @param {Object} player - объект с данными игрока
  */
 const removePlayerFromGroup = player => {
-  switch (player.group) {
-    case 1:
-      groupCounter.group1 -= 1;
-      break;
-    case 2:
-      groupCounter.group2 -= 1;
-      break;
-    case 3:
-      groupCounter.group3 -= 1;
-      break;
-  }
+  groupCounter.groups[player.group - 1] -= 1;
 
   groupPlayers.value = groupPlayers.value.filter(p => p.id !== player.id);
   sendPlayersData.value = sendPlayersData.value.filter(p => p.player_id !== player.id);
@@ -173,10 +156,9 @@ const hideModal = () => {
 };
 
 watch(
-  () => groupCounter,
-  groupCounter => {
-    // Если группы заполнены, кнопка сохранить активна
-    if (groupCounter.group1 === 3 && groupCounter.group2 === 3 && groupCounter.group3 === 3) {
+  () => groupPlayers,
+  groupPlayers => {
+    if (groupPlayers.value.length === 9) {
       btnSaveIsDisabled.value = false;
     } else {
       btnSaveIsDisabled.value = true;
@@ -188,7 +170,7 @@ watch(
 
 // Проверки перед перемещением на главную страницу
 router.beforeEach((to, from, next) => {
-  if ((groupCounter.group1 === 0 && groupCounter.group2 === 0 && groupCounter.group3 === 0) ||
+  if ((groupPlayers.value.length === 0) ||
     isSavedData.value) {
     next();
   } else {
@@ -228,7 +210,7 @@ router.beforeEach((to, from, next) => {
 .groups-configure {
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  align-items: flex-start;
   flex-wrap: wrap;
   row-gap: 30px;
 
