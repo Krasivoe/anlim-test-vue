@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from '@/router/index.js';
 import PrimeVue from 'primevue/config';
+import store from '@/store';
 import components from '@/components/UI';
 
 import 'primevue/resources/themes/lara-light-indigo/theme.css';
@@ -16,5 +17,6 @@ components.forEach(c => {
 
 app.use(PrimeVue);
 app.use(router);
+app.use(store)
 
 app.mount('#app');

@@ -4,48 +4,35 @@
       <span>{{ `Группа ${group}` }}</span>
     </template>
     <ul class="field-inner">
-      <li v-for="player in players" :key="player" @dblclick="removePlayer(player)">{{ player.name }}</li>
+      <li v-for="player in showGroupPlayers" :key="player" @dblclick="removePlayer(player)">{{ player.name }}</li>
     </ul>
   </Fieldset>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, computed } from 'vue';
+import { computed, defineProps } from 'vue';
+import { useStore } from 'vuex';
 
 const props = defineProps({
-  /**
-   * Текущая группа
-   */
+  /** Текущая группа */
   group: {
     type: Number,
-    required: true
-  },
-  /**
-   * Список игроков и групп, в которых они состоят
-   */
-  groupPlayers: {
-    type: Array,
     required: true
   }
 });
 
-const emit = defineEmits(['removePlayer']);
+const store = useStore();
+
+/** Список игроков для отображения в текущей группе */
+const showGroupPlayers = computed(() => {
+  return store.state.groupPlayers.filter(p => p.group === props.group);
+});
 
 /**
  * Событие удаление игрока из группы
  * @param {Object} player - Объект с данными игрока
  */
-const removePlayer = player => {
-  emit('removePlayer', player);
-};
-
-/**
- * Список игроков для отображения в текущей группе
- */
-const players = computed(() => {
-  return props.groupPlayers.filter(p => p.group === props.group);
-});
-
+const removePlayer = player => store.commit('removePlayerFromGroup', player);
 </script>
 
 <style lang="scss">

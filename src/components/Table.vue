@@ -1,6 +1,6 @@
 <template>
   <div class="table">
-    <DataTable :value="props.players" @row-dblclick="onClickRow" sortField="name" :sortOrder="1">
+    <DataTable :value="showTablePlayers" @row-dblclick="onClickRow" sortField="name" :sortOrder="1">
       <Column field="index" header="№" sortable/>
       <Column field="name" header="Участник" sortable/>
       <Column field="birthday" header="Дата рождения" filterField="date" dataType="date" sortable>
@@ -15,29 +15,20 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue';
+import { useStore } from 'vuex';
+import { computed } from 'vue';
 import { formatDate } from '@/utils/index.js';
 
-const props = defineProps({
-  /**
-   * Список игроков для отображения в таблице
-   */
-  players: {
-    type: Array,
-    required: true
-  }
-});
+const store = useStore();
 
-const emit = defineEmits(['addPlayer']);
+/** Список игроков для отображения в таблице */
+const showTablePlayers = computed(() => store.state.displayPlayers);
 
 /**
  * Регистрация события добавления игрока в группу
  * @param {Event} event - Объект с данными о событии
  */
-const onClickRow = event => {
-  emit('addPlayer', event.data);
-};
-
+const onClickRow = event => store.commit('addPlayerToGroup', event.data);
 </script>
 
 <style lang="scss">

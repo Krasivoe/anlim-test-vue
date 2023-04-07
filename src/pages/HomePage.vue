@@ -23,15 +23,16 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useStore } from 'vuex';
 
-/**
- * Свойство, определяющее загрузку изображения
- */
+/** Свойство, определяющее загрузку изображения */
 let isImageLoading = ref(false);
 
-/**
- * Событие загрузки изображения
- */
+// Очистка стора при переходе на главную страницу
+const store = useStore();
+store.commit('resetState');
+
+/** Событие загрузки изображения */
 const onImageLoad = () => {
   isImageLoading.value = true;
 };
