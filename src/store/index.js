@@ -2,8 +2,16 @@ import { createStore } from 'vuex';
 import { players } from '@/assets/data/players.js';
 import { mutations } from '@/store/mutations.js';
 
+// ! Для смены лимитов менять эти переменные
+const playersLimit = 1;
+const groupsLimit = 3;
+
 const getDefaultState = () => {
   return {
+    /** Лимит по количеству игроков в группе */
+    playersLimit: playersLimit,
+    /** Лимит по количеству групп */
+    groupsLimit: groupsLimit,
     /** Список начальных игроков */
     displayPlayers: players
       .sort((a, b) => {
@@ -17,11 +25,11 @@ const getDefaultState = () => {
           birthday: item.birthday
         };
       }),
-    /** Массив объектов с данными игрока и группы, в которую он папал */
+    /** Массив объектов с данными игрока и группы, в которую он попал */
     groupPlayers: [],
     /** Объект, хранящий количество игроков в группах */
     groupCounter: {
-      groups: new Array(3).fill(0),
+      groups: new Array(groupsLimit).fill(0),
       currentGroup: 1
     },
     /** Массив с данными, которые отправятся на сервер */

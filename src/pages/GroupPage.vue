@@ -3,8 +3,8 @@
     <Table/>
 
     <Groups
-      @save-players="savePlayers"
       :is-disabled-button="btnSaveIsDisabled"
+      @save-players="savePlayers"
     />
 
     <Modal v-model:show="modalVisible">
@@ -63,7 +63,7 @@ const hideModal = () => {
 watch(
   () => groupPlayers,
   groupPlayers => {
-    if (groupPlayers.value.length === 9) {
+    if (groupPlayers.value.length === store.state.groupsLimit * store.state.playersLimit) {
       btnSaveIsDisabled.value = false;
     } else {
       btnSaveIsDisabled.value = true;
@@ -84,21 +84,21 @@ router.beforeEach((to, from, next) => {
 });
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .groups-configure {
   display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
   flex-wrap: wrap;
   row-gap: 30px;
+  justify-content: space-around;
+  align-items: flex-start;
 }
 
 .warning {
   display: flex;
   flex-direction: column;
+  row-gap: 25px;
   justify-content: center;
   align-items: center;
-  row-gap: 25px;
   width: 400px;
 
   &-title {
@@ -111,8 +111,8 @@ router.beforeEach((to, from, next) => {
 
   &-buttons {
     display: flex;
-    justify-content: center;
     column-gap: 30px;
+    justify-content: center;
     width: 100%;
     & button {
       width: 130px;

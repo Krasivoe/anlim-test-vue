@@ -7,9 +7,9 @@ export const mutations = {
    * @param {Object} player - объект с данными игрока
    */
   addPlayerToGroup(state, player) {
-    if (state.displayPlayers.length === 1) return;
+    const actualGroup = selectGroup(state.groupCounter, state.playersLimit);
+    if (!actualGroup) return;
 
-    const actualGroup = selectGroup(state.groupCounter);
     state.groupCounter.currentGroup = actualGroup;
     state.groupCounter.groups[actualGroup - 1] += 1;
 

@@ -1,26 +1,25 @@
 <template>
   <div class="forming">
     <div class="groups">
-      <Group
-        v-for="group in groups"
-        :group="group.group_id"
-        :key="group.group_id"/>
+      <Group v-for="group in groups" :key="group.group_id" :group="group.group_id" />
     </div>
     <Button
+      :disabled="props.isDisabledButton"
       class="btn-save"
-      label="Сохранить"
       icon="pi pi-check"
+      label="Сохранить"
       size="small"
       @click="savePlayers"
-      :disabled="props.isDisabledButton"
     />
   </div>
 </template>
 
 <script setup>
 import Group from '@/components/groups/Group.vue';
-import { groups } from '@/assets/data/groups.js';
-import { defineEmits, defineProps } from 'vue';
+import { defineEmits, defineProps, ref } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
 
 const props = defineProps({
   /** Свойство, определяющее активна ли кнопка сохранения */
@@ -31,6 +30,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['savePlayers']);
+const groups = ref(new Array(store.state.groupsLimit).fill(undefined).map((_, idx) =>
+    ({ group_id: idx + 1 })));
 
 /** Событие сохранения игроков для отправки на сервер */
 const savePlayers = () => {
@@ -38,21 +39,21 @@ const savePlayers = () => {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .forming {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   row-gap: 20px;
+  justify-content: space-around;
   min-height: 640px;
 
   .groups {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     flex-wrap: wrap;
     row-gap: 20px;
     column-gap: 20px;
+    justify-content: center;
   }
 
   .btn-save {
@@ -69,8 +70,8 @@ const savePlayers = () => {
 
     .groups {
       flex-direction: row;
-      justify-content: space-around;
       row-gap: 15px;
+      justify-content: space-around;
     }
   }
 }
